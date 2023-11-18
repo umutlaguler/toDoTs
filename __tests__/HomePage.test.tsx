@@ -1,15 +1,24 @@
 import React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react-native'
-import App from '../App';
+import HomePage from '../src/screens/HomePage';
 
 test('renders task list correctly', async () => {
-  const { getByText, getByTestId } = render(<App />);
+  const { getByText, getByTestId } = render(<HomePage />);
 
   const openModalButton = getByTestId('openModal')
   fireEvent.press(openModalButton)
-  // Ekleme işlemi
+
+  //test select priority 
+  const priorityButton3 = getByTestId('priority3')
+  fireEvent.press(priorityButton3)
+  const priorityButton2 = getByTestId('priority2')
+  fireEvent.press(priorityButton2)
+  const priorityButton1 = getByTestId('priority1')
+  fireEvent.press(priorityButton1)
+
+  //test adding process
   const input = getByTestId("newMission");
-  const addButton = getByText('Ekle');
+  const addButton = getByTestId('ekle');
 
   fireEvent.changeText(input, 'Yeni görev');
   fireEvent.press(addButton);
