@@ -17,13 +17,13 @@ const TaskItem = ({ task, onDelete, onToggleCompletion }: { task: Task, onDelete
         <Text>✔️</Text>:null
       }
       </TouchableOpacity>
-      <Text style={task.completed ? styles.completedText : null}>{checkTaskLength(task.content, 18)}</Text>
+      <Text style={task.completed ? styles.completedText : null}>{checkTaskLength(task.content, 28)}</Text>
       <TouchableOpacity 
           testID={`deleteButton-${task.id}`}
           onPress={() => onDelete(task.id)}>
           <Image
             style={styles.dustLogo}
-            source={require('./assets/favicon.png')}
+            source={require('./assets/delete.png')}
           />
       </TouchableOpacity>
     </View>
@@ -120,6 +120,7 @@ const App = () => {
         <Text style = {styles.motivationTxt}>And you have {tasks.length} tasks for today</Text>
       </View>
       <Modal
+        transparent={true}
         animationType="slide"
         visible={modalVisible}
         onRequestClose={() => {
@@ -136,11 +137,11 @@ const App = () => {
             />
             <Text>Is it really difficult?</Text>
             <View style = {styles.priorityView}>
-              <TouchableOpacity onPress={() => onSetPriority(3)}><Text>zor : 3</Text></TouchableOpacity>
-              <TouchableOpacity onPress={() => onSetPriority(2)}><Text>orta : 2</Text></TouchableOpacity>
-              <TouchableOpacity onPress={() => onSetPriority(1)}><Text>kolay : 1</Text></TouchableOpacity>
+              <TouchableOpacity style = {styles.priorityBtn1} onPress={() => onSetPriority(3)}>{priority === 3? <Text>✔️</Text> : null}</TouchableOpacity>
+              <TouchableOpacity style = {styles.priorityBtn2} onPress={() => onSetPriority(2)}>{priority === 2? <Text>✔️</Text> : null}</TouchableOpacity>
+              <TouchableOpacity style = {styles.priorityBtn3} onPress={() => onSetPriority(1)}>{priority === 1? <Text>✔️</Text> : null}</TouchableOpacity>
             </View>
-            <TouchableOpacity  style = {styles.addBtn} onPress={() => handleAddTask()}><Text style = {styles.addTxt}>Ekle</Text></TouchableOpacity>
+            <TouchableOpacity  style = {styles.innerPlusBtn} onPress={() => handleAddTask()}><Text style = {styles.plusTxt}>+</Text></TouchableOpacity>
           </View>
       </Modal>
       <View style = {styles.renderMainContainer}>
@@ -155,7 +156,7 @@ const App = () => {
           testID='openModal'
           onPress={() => setModalVisible(!modalVisible)}
           style = {styles.plusBtn}>
-            <Text>+</Text>
+            <Text style = {styles.plusTxt}>+</Text>
         </TouchableOpacity>
       </View>
       
@@ -231,7 +232,7 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
   },
   modalView: {
-    justifyContent:'flex-start',
+    justifyContent:'space-around',
     width: PhoneWidth * 0.9,
     height: PhoneHeight * 0.4,
     marginTop: PhoneHeight * 0.1,
@@ -255,6 +256,7 @@ const styles = StyleSheet.create({
     alignItems:'center',
     justifyContent: 'center',
     borderRadius: 10,
+    alignSelf: 'flex-end'
   },
   addTxt: {
     fontWeight: '300',
@@ -282,7 +284,59 @@ const styles = StyleSheet.create({
     height: 20
   },
   priorityView: {
-    flexDirection:'row'
+    flexDirection:'row',
+    height: PhoneHeight * 0.05,
+    alignItems:'center',
+  },
+  priorityBtn1: {
+    borderWidth:1,
+    borderRadius: 100,
+    width: 30,
+    height: 30,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'red',
+    marginRight: 5
+  },
+  priorityBtn2: {
+    borderWidth:1,
+    borderRadius: 100,
+    width: 30,
+    height: 30,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'yellow',
+    marginRight: 5
+  },
+  priorityBtn3: {
+    borderWidth:1,
+    borderRadius: 100,
+    width: 30,
+    height: 30,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'green',
+    marginRight: 5
+  },
+  plusTxt: {
+    fontSize: 34
+  },
+  innerPlusBtn: {
+    borderWidth:0, 
+    width: PhoneWidth * 0.15,
+    height: PhoneHeight * 0.085,
+    borderRadius: PhoneWidth * 0.15,
+    alignSelf: 'flex-end',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor:'#c7e2eb',
+    shadowColor: 'blue',
+    shadowOffset: {
+      width: 4,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
   }
 });
 
