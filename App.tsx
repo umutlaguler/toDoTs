@@ -1,11 +1,14 @@
 // App.tsx
 
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, TextInput, Button, FlatList, SafeAreaView, Modal, Alert, TouchableOpacity} from 'react-native';
+import { StyleSheet, Text, View, TextInput, Button, FlatList, SafeAreaView, Modal, Alert, TouchableOpacity, Image} from 'react-native';
 import { getAllTasks, addTask, deleteTask, toggleTaskCompletion, Task } from './src/database';
 import { PhoneHeight, PhoneWidth } from './src/constants/config';
 
 const TaskItem = ({ task, onDelete, onToggleCompletion }: { task: Task, onDelete: (taskId: number) => void, onToggleCompletion: (taskId: number) => void }) => {
+  const checkTaskLength = (text: string, maxLength: number) => {
+    return text.length > maxLength ? text.slice(0, maxLength) + '...' : text;
+  };
   return (
     <View style={styles.taskItem}>
       {/* <CheckBox value={task.completed} onValueChange={() => onToggleCompletion(task.id)} /> */}
@@ -14,10 +17,15 @@ const TaskItem = ({ task, onDelete, onToggleCompletion }: { task: Task, onDelete
         <Text>✔️</Text>:null
       }
       </TouchableOpacity>
-      <Text style={task.completed ? styles.completedText : null}>{task.content}</Text>
-      <Button 
-      testID={`deleteButton-${task.id}`}
-      title="Sil" onPress={() => onDelete(task.id)} />
+      <Text style={task.completed ? styles.completedText : null}>{checkTaskLength(task.content, 18)}</Text>
+      <TouchableOpacity 
+          testID={`deleteButton-${task.id}`}
+          onPress={() => onDelete(task.id)}>
+          <Image
+            style={styles.dustLogo}
+            source={require('./assets/favicon.png')}
+          />
+      </TouchableOpacity>
     </View>
   );
 };
@@ -27,9 +35,16 @@ const App = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [newTask, setNewTask] = useState('');
   const [control, setControl] = useState(false)
+  const [day, setDay] = useState('');
+  const [month, setMonth] = useState('');
+  const [year, setYear] = useState('');
+  const [dayName, setDayName] = useState('')
+
+
   useEffect(() => {
     refreshTasks();
     setControl(!control)
+    formatDate();
   }, []);
 
   useEffect(() => {
@@ -54,7 +69,7 @@ const App = () => {
       await refreshTasks();
     }
   };
-
+  
   const handleDeleteTask = async (taskId: number) => {
     await deleteTask(taskId);
     refreshTasks();
@@ -71,10 +86,24 @@ const App = () => {
       <TaskItem task={item} onDelete={async () => await handleDeleteTask(item.id)} onToggleCompletion={ async () => await handleToggleCompletion(item.id)} />
     )
   }
-
+  const formatDate = () => {
+    const date = new Date();
+    setDay(date.getUTCDate().toString())
+    setMonth(date.getMonth().toString())
+    setYear(date.getFullYear().toString())
+    //to print days as a word
+    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    setDayName(days[date.getDay()])
+  }
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.header}>To-Do List</Text>
+      <View style = {styles.topContainer}>
+        <Text style={styles.header}>{day}.{month}.{year}</Text>
+        <Text style = {styles.dayName}>{dayName}</Text>
+        <Text style = {styles.motivationTxt}>Today is the first day of the rest of your life!</Text>
+        <Text style = {styles.motivationTxt}>And you have {tasks.length} tasks for today</Text>
+
+      </View>
       <Modal
         animationType="slide"
         visible={modalVisible}
@@ -92,19 +121,23 @@ const App = () => {
             <TouchableOpacity  style = {styles.addBtn} onPress={() => handleAddTask()}><Text style = {styles.addTxt}>Ekle</Text></TouchableOpacity>
           </View>
       </Modal>
-      <FlatList
-        data={tasks}
-        keyExtractor={(item) => item?.id?.toString()}
-        renderItem={({ item }) => (
-          renderTaskItem(item)
-        )}
-      />
-      <TouchableOpacity 
-        testID='openModal'
-        onPress={() => setModalVisible(!modalVisible)}
-        style = {styles.plusBtn}>
-          <Text>+</Text>
-      </TouchableOpacity>
+      <View style = {styles.renderMainContainer}>
+        <FlatList
+          data={tasks}
+          keyExtractor={(item) => item?.id?.toString()}
+          renderItem={({ item }) => (
+            renderTaskItem(item)
+          )}
+        />
+        <TouchableOpacity 
+          testID='openModal'
+          onPress={() => setModalVisible(!modalVisible)}
+          style = {styles.plusBtn}>
+            <Text>+</Text>
+        </TouchableOpacity>
+      </View>
+      
+      
     </SafeAreaView>
   );
 };
@@ -112,21 +145,35 @@ const App = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
-    backgroundColor: '#fff',
+    backgroundColor: '#c7e2eb',
+  },
+  topContainer: {
+    height: PhoneHeight * 0.2,
+    backgroundColor:'#c7e2eb'
   },
   header: {
     fontSize: 24,
     fontWeight: 'bold',
-    margin: 20,
+    marginTop: 20,
+    marginLeft: 20
   },
-  
+  dayName:{
+    marginLeft: 20,
+  },
+  motivationTxt: {
+    fontWeight:'200',
+    marginLeft: 20,
+  },
   taskItem: {
+    paddingHorizontal: 20,
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent:'space-between',
     marginBottom: 10,
-    borderBottomWidth: 2,
-    width: PhoneWidth * 0.95,
+    width: '90%',
+    height: PhoneHeight * 0.075,
+    backgroundColor: 'white',
+    borderRadius: 20,
     alignSelf:'center'
   },
   completedText: {
@@ -134,8 +181,16 @@ const styles = StyleSheet.create({
     color: 'gray',
     marginLeft: 10,
   },
+  renderMainContainer: {
+    height: PhoneHeight * 0.8,
+    backgroundColor: '#edebad',
+    borderTopLeftRadius: 70,
+    borderTopRightRadius: 70,
+    paddingTop: 40,
+
+  },
   plusBtn: {
-    borderWidth:2, 
+    borderWidth:0, 
     width: PhoneWidth * 0.15,
     height: PhoneHeight * 0.085,
     borderRadius: PhoneWidth * 0.15,
@@ -143,7 +198,15 @@ const styles = StyleSheet.create({
     marginRight: PhoneWidth * 0.05,
     marginBottom: PhoneHeight * 0.05,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    backgroundColor:'#c7e2eb',
+    shadowColor: 'blue',
+    shadowOffset: {
+      width: 4,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
   },
   modalView: {
     justifyContent:'center',
@@ -188,9 +251,14 @@ const styles = StyleSheet.create({
   checkboxBtn: {
     width: 20,
     height: 20,
-    borderWidth:2,
+    borderWidth: 1,
+    borderRadius: 100,
     alignItems:'center',
     justifyContent:'center',
+  },
+  dustLogo: {
+    width: 20,
+    height: 20
   }
 });
 
