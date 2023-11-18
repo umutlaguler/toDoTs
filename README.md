@@ -48,3 +48,7 @@ git checkout taskFeatures
 # ExtraFeatures branch'ine geçiş yapmak için
 git checkout extraFeatures
 ```
+## Uygulamadan Görüntüler
+
+![WhatsApp Image 2023-11-19 at 02 15 04](https://github.com/umutlaguler/toDoTs/assets/56348345/026dc7ba-fdc8-45ee-b61f-d840e3fffb42)
+
