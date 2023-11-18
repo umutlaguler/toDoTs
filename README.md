@@ -48,6 +48,3 @@ git checkout taskFeatures
 # ExtraFeatures branch'ine geçiş yapmak için
 git checkout extraFeatures
 ```
-## Katkıda Bulunma
-
-Eğer bu projeye katkıda bulunmak istiyorsanız, lütfen CONTRIBUTING.md dosyasını inceleyin ve katkıda bulunmaktan çekinmeyin!
