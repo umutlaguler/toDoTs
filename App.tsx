@@ -10,7 +10,7 @@ const TaskItem = ({ task, onDelete, onToggleCompletion }: { task: Task, onDelete
     return text.length > maxLength ? text.slice(0, maxLength) + '...' : text;
   };
   return (
-    <View style={styles.taskItem}>
+    <View style={[styles.taskItem,{borderLeftWidth: 10 , borderLeftColor: task.priorityColor}]}>
       {/* <CheckBox value={task.completed} onValueChange={() => onToggleCompletion(task.id)} /> */}
       <TouchableOpacity onPress = {() => onToggleCompletion(task.id)} style = {styles.checkboxBtn}>
       {task.completed ? 
@@ -39,6 +39,8 @@ const App = () => {
   const [month, setMonth] = useState('');
   const [year, setYear] = useState('');
   const [dayName, setDayName] = useState('')
+  const [priority, setPriority] = useState(1)
+  const [priorityColor, setPriorityColor] = useState('')
 
 
   useEffect(() => {
@@ -63,7 +65,7 @@ const App = () => {
 
   const handleAddTask = async () => {
     if (newTask.trim() !== '') {
-      await addTask(newTask);
+      await addTask(newTask, priority, priorityColor);
       setNewTask('');
       setModalVisible(false)
       await refreshTasks();
@@ -95,6 +97,20 @@ const App = () => {
     const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     setDayName(days[date.getDay()])
   }
+  const onSetPriority = (item: number) => {
+    if(item === 3){
+      setPriority(3)
+      setPriorityColor('red')
+    }
+    else if(item === 2){
+      setPriority(2)
+      setPriorityColor('yellow')
+    }
+    else if(item === 1){
+      setPriority(1)
+      setPriorityColor('green')
+    }
+  }
   return (
     <SafeAreaView style={styles.container}>
       <View style = {styles.topContainer}>
@@ -102,7 +118,6 @@ const App = () => {
         <Text style = {styles.dayName}>{dayName}</Text>
         <Text style = {styles.motivationTxt}>Today is the first day of the rest of your life!</Text>
         <Text style = {styles.motivationTxt}>And you have {tasks.length} tasks for today</Text>
-
       </View>
       <Modal
         animationType="slide"
@@ -111,13 +126,20 @@ const App = () => {
           setModalVisible(!modalVisible);
         }}>
           <View style={styles.modalView}>
+            <Text>What's your plan?</Text>
             <TextInput
               testID= "newMission"
               style={styles.input}
-              placeholder="Yeni görev ekle"
+              placeholder="Add New Plan"
               value={newTask}
               onChangeText={(text) => setNewTask(text)}
             />
+            <Text>Is it really difficult?</Text>
+            <View style = {styles.priorityView}>
+              <TouchableOpacity onPress={() => onSetPriority(3)}><Text>zor : 3</Text></TouchableOpacity>
+              <TouchableOpacity onPress={() => onSetPriority(2)}><Text>orta : 2</Text></TouchableOpacity>
+              <TouchableOpacity onPress={() => onSetPriority(1)}><Text>kolay : 1</Text></TouchableOpacity>
+            </View>
             <TouchableOpacity  style = {styles.addBtn} onPress={() => handleAddTask()}><Text style = {styles.addTxt}>Ekle</Text></TouchableOpacity>
           </View>
       </Modal>
@@ -209,9 +231,9 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
   },
   modalView: {
-    justifyContent:'center',
+    justifyContent:'flex-start',
     width: PhoneWidth * 0.9,
-    height: PhoneHeight * 0.3,
+    height: PhoneHeight * 0.4,
     marginTop: PhoneHeight * 0.1,
     backgroundColor: 'white',
     borderRadius: 20,
@@ -225,7 +247,6 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
     alignSelf: 'center',
-    alignItems: 'center'
   },
   addBtn: {
     backgroundColor: 'green',
@@ -240,7 +261,7 @@ const styles = StyleSheet.create({
     color: 'white'
   },
   input: {
-    height: '20%',
+    height: PhoneHeight * 0.05,
     width: '70%',
     borderColor: 'gray',
     borderWidth: 1,
@@ -259,6 +280,9 @@ const styles = StyleSheet.create({
   dustLogo: {
     width: 20,
     height: 20
+  },
+  priorityView: {
+    flexDirection:'row'
   }
 });
 

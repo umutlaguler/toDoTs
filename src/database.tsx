@@ -4,11 +4,13 @@ interface Task {
     id: number;
     content: string;
     completed: boolean;
+    priority: number;
+    priorityColor: string
   }
   
   const tasks: Task[] = [
-    { id: 1, content: 'Örnek görev 1', completed: false },
-    { id: 2, content: 'Örnek görev 2', completed: true },
+    { id: 1, content: 'Örnek görev 1', completed: false, priority: 3, priorityColor: 'red' },
+    { id: 2, content: 'Örnek görev 2', completed: true, priority: 2, priorityColor: 'yellow' },
     // ... diğer örnek görevler
   ];
   
@@ -20,10 +22,11 @@ interface Task {
     });
   };
   
-  const addTask = (content: string): Promise<Task> => {
+  const addTask = (content: string, priority: number, priorityColor: string): Promise<Task> => {
+    console.log("priotdsifsdf", priorityColor)
     return new Promise((resolve) => {
       setTimeout(() => {
-        const newTask: Task = { id: tasks.length + 2, content, completed: false };
+        const newTask: Task = { id: tasks.length + 2, content, completed: false, priority, priorityColor};
         tasks.push(newTask);
         resolve(newTask);
       }, 1000);
