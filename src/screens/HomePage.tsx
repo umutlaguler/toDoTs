@@ -56,6 +56,10 @@ const HomePage = () => {
   //to search when user type something 
   useEffect(() => {
     filterTasks();
+    //if dont have task say Congratulations
+    if(tasks.length === 0) {
+      Alert.alert("Congratulations, you have no other tasks to do today.")
+    }
   }, [tasks, searchText]);
 
   //to refresh tasks after any process
