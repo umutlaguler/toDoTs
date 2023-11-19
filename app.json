@@ -2,7 +2,7 @@
   "expo": {
     "name": "ToDoListRise",
     "slug": "ToDoListRise",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -25,6 +25,17 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "5e19c942-2d0a-42e3-a3c4-cc4760cfde64"
+      }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      
     }
   }
 }
