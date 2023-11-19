@@ -12,7 +12,6 @@ const TaskItem = ({ task, onDelete, onToggleCompletion }: { task: Task, onDelete
   };
   return (
     <View style={[styles.taskItem,{borderLeftWidth: 10 , borderLeftColor: task.priorityColor}]}>
-      {/* <CheckBox value={task.completed} onValueChange={() => onToggleCompletion(task.id)} /> */}
       <TouchableOpacity onPress = {() => onToggleCompletion(task.id)} style = {styles.checkboxBtn}>
       {task.completed ? 
         <Text>✔️</Text>:null
@@ -108,15 +107,15 @@ const HomePage = () => {
   const onSetPriority = (item: number) => {
     if(item === 3){
       setPriority(3)
-      setPriorityColor('red')
+      setPriorityColor('#f58078')
     }
     else if(item === 2){
       setPriority(2)
-      setPriorityColor('yellow')
+      setPriorityColor('#fce938')
     }
     else if(item === 1){
       setPriority(1)
-      setPriorityColor('green')
+      setPriorityColor('#a1e394')
     }
   }
   //to render our add task modal
@@ -302,7 +301,6 @@ const styles = StyleSheet.create({
     fontWeight: '300',
     color: 'white'
   },
- 
   checkboxBtn: {
     width: 20,
     height: 20,
@@ -315,35 +313,34 @@ const styles = StyleSheet.create({
     width: 20,
     height: 20
   },
-  
   priorityBtn1: {
-    borderWidth:1,
+    borderWidth:0.5,
     borderRadius: 100,
     width: 30,
     height: 30,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'red',
+    backgroundColor: '#f58078',
     marginRight: 5
   },
   priorityBtn2: {
-    borderWidth:1,
+    borderWidth:0.5,
     borderRadius: 100,
     width: 30,
     height: 30,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'yellow',
+    backgroundColor: '#fce938',
     marginRight: 5
   },
   priorityBtn3: {
-    borderWidth:1,
+    borderWidth:0.5,
     borderRadius: 100,
     width: 30,
     height: 30,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'green',
+    backgroundColor: '#a1e394',
     marginRight: 5
   },
   plusTxt: {
