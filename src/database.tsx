@@ -11,8 +11,8 @@ interface Task {
 const STORAGE_KEY = 'mytasks';
 
 const tasks: Task[] = [
-  { id: 1, content: 'Örnek görev 1', completed: false, priority: 3, priorityColor: 'red' },
-  { id: 2, content: 'Örnek görev 2', completed: true, priority: 2, priorityColor: 'yellow' },
+  // { id: 1, content: 'Örnek görev 1', completed: false, priority: 3, priorityColor: 'red' },
+  // { id: 2, content: 'Örnek görev 2', completed: true, priority: 2, priorityColor: 'yellow' },
   // ... diğer örnek görevler
 ];
 

@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TextInput, Button, FlatList, SafeAreaView, Modal, Alert, TouchableOpacity, Image} from 'react-native';
 import { getAllTasks, addTask, deleteTask, toggleTaskCompletion, Task } from '../../src/database';
 import { PhoneHeight, PhoneWidth } from '../constants/config';
+import SearchBar from '../components/SearchBar';
 
 const TaskItem = ({ task, onDelete, onToggleCompletion }: { task: Task, onDelete: (taskId: number) => void, onToggleCompletion: (taskId: number) => void }) => {
   const checkTaskLength = (text: string, maxLength: number) => {
@@ -42,12 +43,21 @@ const HomePage = () => {
   const [dayName, setDayName] = useState('')
   const [priority, setPriority] = useState(1)
   const [priorityColor, setPriorityColor] = useState('')
+  //to make search
+  const [searchText, setSearchText] = useState('')
+  const [filteredTasks, setFilteredTasks] = useState<Task[]>([]);
 
   useEffect(() => {
     refreshTasks();
     setControl(!control) //to avoid async bug 
     formatDate(); //to print current date on homepage
   }, []);
+  
+  //to search when user type something 
+  useEffect(() => {
+    filterTasks();
+  }, [tasks, searchText]);
+
   //to refresh tasks after any process
   const refreshTasks = async () => {
     const fetchedTasks = await getAllTasks();
@@ -135,6 +145,16 @@ const HomePage = () => {
       </Modal>
     )
   }
+  //to search for a task
+  const handleSearch = (text: string) => {
+    setSearchText(text);
+  };
+  // Arama işlemini gerçekleştir
+  const filterTasks = () => {
+    const filtered = tasks.filter(task => task.content.toLowerCase().includes(searchText.toLowerCase()));
+    setFilteredTasks(filtered);
+  };
+
   return (
     <SafeAreaView style={styles.container}>
         <View style = {styles.topContainer}>
@@ -142,13 +162,15 @@ const HomePage = () => {
             <Text style = {styles.dayName}>{dayName}</Text>
             <Text style = {styles.motivationTxt}>Today is the first day of the rest of your life!</Text>
             <Text style = {styles.motivationTxt}>And you have {tasks.length} tasks for today</Text>
+            <SearchBar onSearch={handleSearch}/>
+
         </View>
         {
             modalRenderItem()
         }
         <View style = {styles.renderMainContainer}>
             <FlatList
-            data={tasks}
+            data={filteredTasks.length > 0 ? filteredTasks : tasks}
             keyExtractor={(item) => item?.id?.toString()}
             renderItem={({ item }) => (
                 renderTaskItem(item)
@@ -171,8 +193,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#c7e2eb',
   },
   topContainer: {
-    height: PhoneHeight * 0.2,
-    backgroundColor:'#c7e2eb'
+    height: PhoneHeight * 0.25,
+    backgroundColor:'#c7e2eb',
   },
   header: {
     fontSize: 24,
@@ -237,7 +259,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   renderMainContainer: {
-    height: PhoneHeight * 0.8,
+    height: PhoneHeight * 0.75,
     backgroundColor: '#edebad',
     borderTopLeftRadius: 70,
     borderTopRightRadius: 70,
