@@ -48,7 +48,23 @@ git checkout taskFeatures
 # ExtraFeatures branch'ine geçiş yapmak için
 git checkout extraFeatures
 ```
+
+## Uygulama Tasarımı 
+
+- Uygulamanın tasarımı kullanıcı dostu olacak şekilde kurgulandı. Temel görev ekleme, görev silme ve yapıldı olarak işaretleme gibi işlemlere minimum parmak hareketi ile erişim sağlanmaya çalışıldı. 
+- Ayrıca farklı ekran boyutlarında hatasız çalıştırılabilmesi için de responsive bir şekilde kodlanılmasına özen gösterildi.
+
+## Extra Özellikler
+
+- Görevler için zorluk seçimi: Kullanıcı görev eklerken zor, orta, kolay anlamına gelen 3 renkten birisini seçer ve görevler buna göre listelenir.
+- Arama modülü eklendi: Eklenilen görevler üzerinde başlığa göre arama yapılabilir ve görevler filtrelenmiş şekilde listelenir.
+- Görev sayısı kontrolü: Anasayfada kullancıya günün tarihi ve o gün yapması gereken kaç görevi olduğu bilgisi verilir.
+
+## Test İçeriği
+
+Uygulamanın birim testleri için Jest kütüphanesi kullanıldı. Arama yapısı ve anasayfanın render edilmesi gibi basit kullanıcı işlemlerini simüle eden birim testler yazıldı. 
+
 ## Uygulamadan Görüntüler
 
-![WhatsApp Image 2023-11-19 at 02 15 04](https://github.com/umutlaguler/toDoTs/assets/56348345/026dc7ba-fdc8-45ee-b61f-d840e3fffb42)
+
 
