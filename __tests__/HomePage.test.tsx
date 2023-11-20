@@ -1,8 +1,11 @@
 import React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react-native'
 import HomePage from '../src/screens/HomePage';
+//to avoid async storage import fail with test jest
+jest.mock('@react-native-async-storage/async-storage', () => require('@react-native-async-storage/async-storage/jest/async-storage-mock'));
 
 test('renders task list correctly', async () => {
+  
   const { getByText, getByTestId } = render(<HomePage />);
 
   const openModalButton = getByTestId('openModal')
@@ -27,9 +30,7 @@ test('renders task list correctly', async () => {
   await waitFor(() => getByText('Yeni görev'), { timeout: 3000 });
 
   // Silme işlemi
-  const deleteButton = getByTestId('deleteButton-1'); // Örnek olarak, 1. görevin 'Sil' butonunu seçiyoruz
+  const deleteButton = getByTestId('deleteButton-2'); // 1 + 1 id for any delete button of task
   fireEvent.press(deleteButton);
 
-  // Görevin silinip silinmediğini kontrol et
-  // await waitFor(() => expect(queryByText('Yeni görev')).toBeNull(), { timeout: 3000 });
 });

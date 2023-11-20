@@ -41,7 +41,7 @@ const HomePage = () => {
   const [year, setYear] = useState('');
   const [dayName, setDayName] = useState('')
   const [priority, setPriority] = useState(1)
-  const [priorityColor, setPriorityColor] = useState('')
+  const [priorityColor, setPriorityColor] = useState('#a1e394')
   //to make search
   const [searchText, setSearchText] = useState('')
   const [filteredTasks, setFilteredTasks] = useState<Task[]>([]);
@@ -55,10 +55,6 @@ const HomePage = () => {
   //to search when user type something 
   useEffect(() => {
     filterTasks();
-    //if dont have task say Congratulations
-    if(tasks.length === 0) {
-      Alert.alert("Congratulations, you have no other tasks to do today.")
-    }
   }, [tasks, searchText]);
 
   //to refresh tasks after any process
@@ -164,7 +160,11 @@ const HomePage = () => {
             <Text style={styles.header}>{day}.{month}.{year}</Text>
             <Text style = {styles.dayName}>{dayName}</Text>
             <Text style = {styles.motivationTxt}>Today is the first day of the rest of your life!</Text>
-            <Text style = {styles.motivationTxt}>And you have {tasks.length} tasks for today</Text>
+            <Text style={styles.motivationTxt}>
+              {tasks.length === 0
+                ? "Congratulations, there is no task to do today!"
+                : `And today you have ${tasks.length} tasks.`}
+            </Text>
             <SearchBar onSearch={handleSearch}/>
 
         </View>
@@ -193,24 +193,27 @@ const HomePage = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#c7e2eb',
+    backgroundColor: '#f65235',
   },
   topContainer: {
     height: PhoneHeight * 0.25,
-    backgroundColor:'#c7e2eb',
+    backgroundColor:'#f65235',
   },
   header: {
     fontSize: 24,
     fontWeight: 'bold',
     marginTop: 20,
-    marginLeft: 20
+    marginLeft: 20,
+    color: '#fff'
   },
   dayName:{
     marginLeft: 20,
+    color: '#fff'
   },
   motivationTxt: {
     fontWeight:'200',
     marginLeft: 20,
+    color: '#fff'
   },
   modalView: {
     justifyContent:'space-around',
@@ -253,7 +256,7 @@ const styles = StyleSheet.create({
     width: '90%',
     height: PhoneHeight * 0.075,
     backgroundColor: 'white',
-    borderRadius: 20,
+    borderRadius: 10,
     alignSelf:'center'
   },
   completedText: {
@@ -263,24 +266,24 @@ const styles = StyleSheet.create({
   },
   renderMainContainer: {
     height: PhoneHeight * 0.75,
-    backgroundColor: '#edebad',
-    borderTopLeftRadius: 70,
-    borderTopRightRadius: 70,
+    backgroundColor: '#1c1c35',
+    borderTopLeftRadius: 25,
+    borderTopRightRadius: 25,
     paddingTop: 40,
 
   },
   plusBtn: {
     borderWidth:0, 
-    width: PhoneWidth * 0.15,
-    height: PhoneHeight * 0.085,
-    borderRadius: PhoneWidth * 0.15,
+    width: 70,
+    height: 70,
+    borderRadius: 70/2,
     alignSelf: 'flex-end',
-    marginRight: PhoneWidth * 0.05,
-    marginBottom: PhoneHeight * 0.05,
+    marginRight: '8%',
+    marginBottom: '12%',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor:'#c7e2eb',
-    shadowColor: 'blue',
+    backgroundColor:'#f65235',
+    shadowColor: 'red',
     shadowOffset: {
       width: 4,
       height: 2,
@@ -344,18 +347,19 @@ const styles = StyleSheet.create({
     marginRight: 5
   },
   plusTxt: {
-    fontSize: 34
+    fontSize: 34,
+    color: '#fff'
   },
   innerPlusBtn: {
     borderWidth:0, 
-    width: PhoneWidth * 0.15,
-    height: PhoneHeight * 0.085,
+    width: 60,
+    height: 60,
     borderRadius: PhoneWidth * 0.15,
     alignSelf: 'flex-end',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor:'#c7e2eb',
-    shadowColor: 'blue',
+    backgroundColor:'#f65235',
+    shadowColor: 'red',
     shadowOffset: {
       width: 4,
       height: 2,
