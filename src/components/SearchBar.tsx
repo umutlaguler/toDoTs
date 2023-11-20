@@ -33,8 +33,7 @@ const styles = StyleSheet.create({
   input: {
     height: PhoneHeight * 0.05,
     width: '80%',
-    borderColor: 'gray',
-    borderWidth: 0.5,
+    borderRadius: 10,
     backgroundColor: 'white',
     alignSelf: 'center',
     marginTop: PhoneHeight * 0.02,
