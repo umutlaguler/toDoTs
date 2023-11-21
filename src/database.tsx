@@ -7,9 +7,10 @@ interface Task {
   priority: number;
   priorityColor: string;
 }
-
+//device storage key
 const STORAGE_KEY = 'mytasks';
 
+//main data
 const tasks: Task[] = [];
 
 const saveTasksToStorage = async (tasks: Task[]): Promise<void> => {
